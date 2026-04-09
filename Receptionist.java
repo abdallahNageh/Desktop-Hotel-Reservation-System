@@ -27,7 +27,7 @@ public class Receptionist extends Staff {
 
                 if (r.getStatus() == ReservationStatus.CONFIRMED) {
 
-                    if (LocalDate.now().isBefore(r.getCheckindate())) {
+                    if (LocalDate.now().isBefore(r.getCheckInDate())) {
                         System.out.println("Too early for check-in.");
                         return;
                     }
@@ -52,8 +52,8 @@ public class Receptionist extends Staff {
                 r.getStatus() == ReservationStatus.CONFIRMED) {
 
                 long days = java.time.temporal.ChronoUnit.DAYS.between(
-                        r.getCheckindate(),
-                        r.getCheckoutdate()
+                        r.getCheckInDate(),
+                        r.getCheckOutDate()
                 );
 
                 double total = days * r.getRoom().getPricePerNight();
