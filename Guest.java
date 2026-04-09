@@ -1,24 +1,22 @@
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Guest {
-    private String username ;
+    private String username;
     private String password;
-    private Date dateOfBirth ;
+    private Date dateOfBirth;
     private Gender gender;
     private double balance;
-    private String address ;
+    private String address;
     // private Gender gender ;
-    private String roomPreferences ;
+    private String roomPreferences;
     public static int noOfguest = 0;
 
-    public Guest(String username, String password, Date dateOfBirth, Gender gender, double balance, String address, String roomPreferences) {
+    public Guest(String username, String password) {
         this.username = username;
         this.password = password;
-        this.dateOfBirth = dateOfBirth;
-        this.gender = gender;
-        this.balance = balance;
-        this.address = address;
-        this.roomPreferences = roomPreferences;
+        noOfguest += 1;
     }
 
     public String getUsername() {
@@ -78,10 +76,82 @@ public class Guest {
     }
 
 
-   
+    public void register(String username, String password, Gender gender, Date dataofbirth, String address, double balance, String roomPreferences) {
+        Guest newobj = new Guest(username, password);
+        newobj.setDateOfBirth(dataofbirth);
+        newobj.setGender(gender);
+        newobj.setAddress(address);
+        newobj.setBalance(balance);
+        newobj.setRoomPreferences(roomPreferences);
+        HotelDatabase.addGuest(newobj);
+    }
 
+    public boolean login(String username, String password) {
+        return this.username.equals(username) && this.password.equals(password);
+    }
+
+    public ArrayList<Room> viewAvailableRooms() {
+        ArrayList<Room> rooms = (ArrayList<Room>) HotelDatabase.getRooms();
+        ArrayList<Room> Available = new ArrayList<>();
+        for (Room r : rooms) {
+            if (r.isAvailable() == true) {
+                Available.add(r);
+                System.out.println("room number : "+ r.getRoomNumber() +"\n" +  " room type : " +r.getRoomType()+"\n" +"Price / Night "+ r.getPricePerNight());
+
+                for(int i = 0 ;i < r.getAmenities().size()  ; i++){
+                    System.out.println(r.getAmenities().get(i).getName());
+                }
+            }
+        }
+        return Available;
+    }
+
+
+    public Reservation makeReservation(Room room,LocalDate checkin,  LocalDate checkout){
+        Reservation newRev = new Reservation( this, room ,  checkin,  checkout);
+        HotelDatabase.addReservation(newRev);
+        return newRev ;
+    }
+
+    public ArrayList<Reservation> viewmyReservation(){
+        ArrayList<Reservation> myReservation = new ArrayList<Reservation>();
+        for (Reservation R : HotelDatabase.getReservations()) {
+            if (R.getGuest().equals(this)) {
+                 myReservation.add(R) ;
+            }
+
+        }
+        return myReservation ;
+    }
+
+    public void  cancelReservation (Reservation reservation){
+        reservation.setStatus(ReservationStatus.CANCELLED);
+    }
+
+
+    public Invoice checkout(Reservation reservation) {
+
+        long days = java.time.temporal.ChronoUnit.DAYS.between(reservation.getCheckindate(), reservation.getCheckoutdate());
+
+
+        double total = days * reservation.getRoom().getPricePerNight();
+
+
+        Invoice invoice = new Invoice(total, PaymentMethod.CASH , LocalDate.now());
+
+
+        HotelDatabase.addInvoice(invoice);
+
+
+        reservation.setStatus(ReservationStatus.COMPLETED);
+
+        return invoice;
+    }
 
 
 
 
 }
+
+
+
