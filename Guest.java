@@ -78,27 +78,8 @@ public class Guest {
     }
 
 
-    public void register(String username, String password, Date dateOfBirth, double balance, String address, String roomPreferences){
-        if (noOfguest<256) {
-            HotelDatabase.guests[noOfguest] = new Guest(username, password, dateOfBirth, balance, address, roomPreferences);
-        }
-        else {
-            System.out.println("Storage completed");
-        }
-    }
+   
 
-    public boolean login(String username, String password) {
-        boolean log = false;
-        for (int i = 0; i < 256; i++) {
-            if (HotelDatabase.guests[i].username.equals(username) && HotelDatabase.guests[i].password.equals(password)) {
-                log = true;
-                break;
-            } else {
-                log = false;
-            }
-        }
-        return log;
-    }
 
 
 
