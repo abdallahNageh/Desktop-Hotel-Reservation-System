@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class Reservation {
+    private static int nextId = 1;
     private int id;
     private Guest guest;
     private Room room;
@@ -10,8 +11,8 @@ public class Reservation {
     private ReservationStatus status;
 
 
-public Reservation(int id, Guest guest, Room room, LocalDate checkInDate, LocalDate checkOutDate) {
-    this.id = id;
+public Reservation(Guest guest, Room room, LocalDate checkInDate, LocalDate checkOutDate) {
+    this.id = nextId++;
     this.guest = guest;
     this.room = room;
 
