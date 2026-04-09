@@ -4,21 +4,22 @@ public class Guest {
     private String username ;
     private String password;
     private Date dateOfBirth ;
+    private Gender gender;
     private double balance;
     private String address ;
     // private Gender gender ;
     private String roomPreferences ;
     public static int noOfguest = 0;
 
-    public Guest(String username, String password, Date dateOfBirth, double balance, String address, String roomPreferences) {
+    public Guest(String username, String password, Date dateOfBirth, Gender gender, double balance, String address, String roomPreferences) {
         this.username = username;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
         this.balance = balance;
         this.address = address;
         this.roomPreferences = roomPreferences;
     }
-
 
     public String getUsername() {
         return username;
@@ -44,6 +45,13 @@ public class Guest {
         return roomPreferences;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
     public void setUsername(String username) {
         this.username = username;
