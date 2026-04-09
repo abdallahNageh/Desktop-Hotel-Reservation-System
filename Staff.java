@@ -1,17 +1,20 @@
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 public abstract class Staff {
 
-    private String username ;
+    private String username;
     private String password;
-    private Date dateOfBirth;
-    private int workingHours ;
+    private LocalDate dateOfBirth;
+    private int workingHours;
+    private Role role;
 
-    Staff(String username ,String password, Date dateOfBirth ,int workingHours ){
+    Staff(String username, String password, LocalDate dateOfBirth, int workingHours, Role role) {
         this.username = username;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.workingHours = workingHours;
-
+        this.role = role;
     }
 
     public String getUsername() {
@@ -22,7 +25,7 @@ public abstract class Staff {
         return password;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -38,7 +41,7 @@ public abstract class Staff {
         this.password = password;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -46,7 +49,19 @@ public abstract class Staff {
         this.workingHours = workingHours;
     }
 
-    public boolean login(){
-        return false;
+    public boolean login(String user, String pass) {
+        return username.equals(user) && password.equals(pass);
+    }
+
+    public ArrayList<Guest> viewGuests() {
+        return HotelDatabase.getGuests();
+    }
+
+    public ArrayList<Room> viewRooms() {
+        return HotelDatabase.getRooms();
+    }
+
+    public ArrayList<Reservation> viewReservations() {
+        return HotelDatabase.getReservations();
     }
 }
