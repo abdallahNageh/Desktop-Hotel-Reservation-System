@@ -4,12 +4,12 @@ import java.util.List;
 public class HotelDatabase {
 
     // 🔹 Data Storage
-    private static List<Guest> guests = new ArrayList<>();
-    private static List<Room> rooms = new ArrayList<>();
-    private static List<Reservation> reservations = new ArrayList<>();
-    private static List<Invoice> invoices = new ArrayList<>();
-    private static List<RoomType> roomTypes = new ArrayList<>();
-    private static List<Amenity> amenities = new ArrayList<>();
+    private static ArrayList<Guest> guests = new ArrayList<>();
+    private static ArrayList<Room> rooms = new ArrayList<>();
+    private static ArrayList<Reservation> reservations = new ArrayList<>();
+    private static ArrayList<Invoice> invoices = new ArrayList<>();
+    private static ArrayList<RoomType> roomTypes = new ArrayList<>();
+    private static ArrayList<Amenity> amenities = new ArrayList<>();
 
     // 🔹 ADD
     public static void addGuest(Guest guest) {
@@ -82,23 +82,23 @@ public class HotelDatabase {
     }
 
     // 🔹 GETTERS (optional)
-    public static List<Guest> getGuests() {
+    public static ArrayList<Guest> getGuests() {
         return guests;
     }
 
-    public static List<Room> getRooms() {
+    public static ArrayList<Room> getRooms() {
         return rooms;
     }
 
-    public static List<Reservation> getReservations() {
+    public static ArrayList<Reservation> getReservations() {
         return reservations;
     }
 
-    public static List<Amenity> getAmenities() {
+    public static ArrayList<Amenity> getAmenities() {
         return amenities;
     }
 
-    public static List<RoomType> getRoomTypes() {
+    public static ArrayList<RoomType> getRoomTypes() {
         return roomTypes;
     }
 
