@@ -3,16 +3,15 @@ import java.util.List;
 
 public class HotelDatabase {
 
-    // 🔹 Data Storage (Static)
-    public static List<Guest> guests = new ArrayList<>();
-    public static List<Room> rooms = new ArrayList<>();
-    public static List<Reservation> reservations = new ArrayList<>();
-    public static List<Invoice> invoices = new ArrayList<>();
-    public static List<RoomType> roomTypes = new ArrayList<>();
-    public static List<Amenity> amenities = new ArrayList<>();
+    // 🔹 Data Storage
+    private static List<Guest> guests = new ArrayList<>();
+    private static List<Room> rooms = new ArrayList<>();
+    private static List<Reservation> reservations = new ArrayList<>();
+    private static List<Invoice> invoices = new ArrayList<>();
+    private static List<RoomType> roomTypes = new ArrayList<>();
+    private static List<Amenity> amenities = new ArrayList<>();
 
-
-    // 🔹 Add Methods
+    // 🔹 ADD
     public static void addGuest(Guest guest) {
         guests.add(guest);
     }
@@ -37,8 +36,7 @@ public class HotelDatabase {
         amenities.add(amenity);
     }
 
-
-    // 🔹 Find Methods
+    // 🔹 FIND
     public static Guest findGuest(String username) {
         for (Guest g : guests) {
             if (g.getUsername().equals(username)) {
@@ -66,8 +64,7 @@ public class HotelDatabase {
         return null;
     }
 
-
-    // 🔹 Remove Methods
+    // 🔹 REMOVE
     public static void removeGuest(Guest guest) {
         guests.remove(guest);
     }
@@ -84,32 +81,45 @@ public class HotelDatabase {
         amenities.remove(amenity);
     }
 
+    // 🔹 GETTERS (optional)
+    public static List<Guest> getGuests() {
+        return guests;
+    }
 
-    // 🔹 Dummy Data (مهم جدًا للتجربة)
+    public static List<Room> getRooms() {
+        return rooms;
+    }
+
+    public static List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public static List<Amenity> getAmenities() {
+        return amenities;
+    }
+
+    public static List<RoomType> getRoomTypes() {
+        return roomTypes;
+    }
+
+    // 🔹 Dummy Data
     public static void initializeData() {
 
-        // Amenities
-        Amenity wifi = new Amenity(1, "WiFi", "High-speed internet");
+        Amenity wifi = new Amenity(1, "WiFi", "High speed internet");
         Amenity tv = new Amenity(2, "TV", "Smart TV");
+
         amenities.add(wifi);
         amenities.add(tv);
 
-        // Room Types
-        RoomType single = new RoomType(1, "Single", "Single bed room", 500);
-        RoomType doubleRoom = new RoomType(2, "Double", "Double bed room", 800);
+        RoomType single = new RoomType(1, "Single", "Single room", 500);
+        RoomType doubleRoom = new RoomType(2, "Double", "Double room", 800);
+
         roomTypes.add(single);
         roomTypes.add(doubleRoom);
 
-        // Rooms
-        List<Amenity> room1Amenities = new ArrayList<>();
-        room1Amenities.add(wifi);
-        room1Amenities.add(tv);
+        List<Amenity> roomAmenities = new ArrayList<>();
+        roomAmenities.add(wifi);
+        roomAmenities.add(tv);
 
-        Room room1 = new Room(101, 500, single, room1Amenities);
-        rooms.add(room1);
-
-        // Guest
-        Guest guest1 = new Guest("abdullah", "1234", null, 1000, "Cairo", Gender.MALE, "Single");
-        guests.add(guest1);
     }
 }
