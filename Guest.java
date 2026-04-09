@@ -131,7 +131,7 @@ public class Guest {
 
     public Invoice checkout(Reservation reservation) {
 
-        long days = java.time.temporal.ChronoUnit.DAYS.between(reservation.getCheckindate(), reservation.getCheckoutdate());
+        long days = java.time.temporal.ChronoUnit.DAYS.between(reservation.getCheckInDate(), reservation.getCheckOutDate());
 
 
         double total = days * reservation.getRoom().getPricePerNight();
@@ -152,6 +152,5 @@ public class Guest {
 
 
 }
-
 
 
