@@ -1,15 +1,17 @@
 public class RoomType {
     private int id;
-    private String name;
+    private  RoomTypeName name ;   //i will use Enum
     private String description ;
     private double basePrice ;
 
-    public RoomType(int id, String name, String description, double basePrice) {
+    public RoomType(int id, RoomTypeName name, String description, double basePrice) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.basePrice = basePrice;
     }
+
+
 
     public int getId() {
         return id;

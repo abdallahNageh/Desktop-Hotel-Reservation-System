@@ -3,16 +3,16 @@ import java.util.List;
 public class Room {
 
     private int roomNumber ;
-    private double pricePerNight;
+    private double pricePerNight;  // basePrice from RoomType class
     private List<Amenity> amenities;
     private boolean isAvailable ;
     private RoomType roomType;
 
     public Room(){}
 
-    public Room(int roomNumber, double pricePerNight, List<Amenity> amenities, boolean isAvailable, RoomType roomType) {
+    public Room(int roomNumber, List<Amenity> amenities, boolean isAvailable, RoomType roomType) {
         this.roomNumber = roomNumber;
-        this.pricePerNight = pricePerNight;
+        // this.pricePerNight = pricePerNight;
         this.amenities = amenities;
         this.isAvailable = isAvailable;
         this.roomType = roomType;
