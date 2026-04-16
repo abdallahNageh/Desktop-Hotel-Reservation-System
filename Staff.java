@@ -9,6 +9,17 @@ public abstract class Staff {
     private int workingHours;
     private Role role;
 
+    public  boolean equals(Object o) {
+
+        if(o==null || !(o instanceof Staff)) return false;
+
+        Staff staff = (Staff)o ;
+
+        return (this.username.equals(staff.getUsername())  && this.password.equals(staff.getPassword()));
+
+    }
+
+
     Staff(String username, String password, LocalDate dateOfBirth, int workingHours, Role role) {
         this.username = username;
         this.password = password;
@@ -16,7 +27,6 @@ public abstract class Staff {
         this.workingHours = workingHours;
         this.role = role;
     }
-
     public String getUsername() {
         return username;
     }
@@ -49,19 +59,15 @@ public abstract class Staff {
         this.workingHours = workingHours;
     }
 
-    public boolean login(String user, String pass) {
-        return username.equals(user) && password.equals(pass);
+    public ArrayList<Guest> viewGuests(){
+    return HotelDatabase.getGuests();
+    };
+
+     public ArrayList<Room> viewRooms() {
+         return HotelDatabase.getRooms();
     }
 
-    public ArrayList<Guest> viewGuests() {
-        return HotelDatabase.getGuests();
-    }
-
-    public ArrayList<Room> viewRooms() {
-        return HotelDatabase.getRooms();
-    }
-
-    public ArrayList<Reservation> viewReservations() {
-        return HotelDatabase.getReservations();
-    }
+     public ArrayList<Reservation> viewReservations() {
+         return HotelDatabase.getReservations();
+     }
 }

@@ -29,7 +29,7 @@ public class Admin extends Staff {
         HotelDatabase.removeAmenity(amenity);
     }
 
-    }
+}
 
 
 

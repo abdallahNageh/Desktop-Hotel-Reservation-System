@@ -13,6 +13,14 @@ public class Guest {
     private String roomPreferences;
     public static int noOfguest = 0;
 
+    public boolean equals(Object o){
+        if(o==null || !(o instanceof Guest)) return false;
+        Guest guest = (Guest)o;
+        return (this.username.equals(guest.getUsername())&& this.password.equals(guest.password));
+    }
+
+
+
     public Guest(String username, String password) {
         this.username = username;
         this.password = password;
@@ -147,10 +155,6 @@ public class Guest {
 
         return invoice;
     }
-
-
-
-
 }
 
 

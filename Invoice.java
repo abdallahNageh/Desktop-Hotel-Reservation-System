@@ -8,6 +8,12 @@ public class Invoice {
     private PaymentMethod paymentMethod;  //Enum
     private LocalDate paymentDate;
 
+    @Override
+    public boolean equals(Object o) {
+        if(o==null || !(o instanceof Invoice)) return false;
+        Invoice invoice = (Invoice) o;
+        return (this.id == invoice.getId());
+    }
 
     public Invoice() {
     }

@@ -4,6 +4,18 @@ public class RoomType {
     private String description ;
     private double basePrice ;
 
+
+    @Override
+
+    public boolean equals(Object o) {
+
+        if(o==null || !(o instanceof RoomType)) return false;
+
+        RoomType roomType = (RoomType)o ;
+
+        return (id == roomType.getId());
+    }
+
     public RoomType(int id, RoomTypeName name, String description, double basePrice) {
         this.id = id;
         this.name = name;

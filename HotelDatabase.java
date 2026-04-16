@@ -4,12 +4,41 @@ import java.util.List;
 public class HotelDatabase {
 
     // 🔹 Data Storage
+    private static ArrayList<Receptionist> receptionists = new ArrayList<>();
+    private static ArrayList<Admin> admins = new ArrayList<>();
     private static ArrayList<Guest> guests = new ArrayList<>();
     private static ArrayList<Room> rooms = new ArrayList<>();
     private static ArrayList<Reservation> reservations = new ArrayList<>();
     private static ArrayList<Invoice> invoices = new ArrayList<>();
     private static ArrayList<RoomType> roomTypes = new ArrayList<>();
     private static ArrayList<Amenity> amenities = new ArrayList<>();
+    private static Admin currentAmdin = null ;
+    private static Guest currentGuest = null ;
+    private static Receptionist currentReceptionist = null ;
+
+    public static Guest getCurrentGuest() {
+        return currentGuest;
+    }
+
+    public static void setCurrentGuest(Guest currentGuest) {
+        HotelDatabase.currentGuest = currentGuest;
+    }
+
+    public static Admin getCurrentAmdin() {
+        return currentAmdin;
+    }
+
+    public  static void setCurrentAmdin(Admin currentAmdin) {
+        HotelDatabase.currentAmdin = currentAmdin;
+    }
+
+    public static Receptionist getCurrentReceptionist() {
+        return currentReceptionist;
+    }
+
+    public static void setCurrentReceptionist(Receptionist currentReceptionist) {
+        HotelDatabase.currentReceptionist = currentReceptionist;
+    }
 
     // 🔹 ADD
     public static void addGuest(Guest guest) {
@@ -35,6 +64,8 @@ public class HotelDatabase {
     public static void addAmenity(Amenity amenity) {
         amenities.add(amenity);
     }
+    public static void addAdmin(Admin admin){admins.add(admin);}
+    public static void addReceptionist(Receptionist receptionist){receptionists.add(receptionist);}
 
     // 🔹 FIND
     public static Guest findGuest(String username) {
@@ -63,6 +94,20 @@ public class HotelDatabase {
         }
         return null;
     }
+    public static Admin findAdmin(String name,String password){
+        for (Admin a:admins){
+            if(a.getUsername()== name && a.getPassword() == password)
+                return a ;
+        }
+        return null ;
+    }
+    public static Receptionist findReceptionist(String name,String password){
+        for (Receptionist a:receptionists){
+            if(a.getUsername() == name && a.getPassword()==password)
+                return a;
+                    }
+        return null;
+    }
 
     // 🔹 REMOVE
     public static void removeGuest(Guest guest) {
@@ -71,17 +116,25 @@ public class HotelDatabase {
 
     public static void removeRoom(Room room) {
         rooms.remove(room);
+
     }
 
     public static void removeReservation(Reservation reservation) {
-        reservations.remove(reservation);
+             reservations.remove(reservation);
     }
 
     public static void removeAmenity(Amenity amenity) {
-        amenities.remove(amenity);
+            amenities.remove(amenity);
     }
 
     // 🔹 GETTERS (optional)
+
+    public static ArrayList<Admin> getAdmins() {
+        return admins;
+    }
+    public static ArrayList<Receptionist> getReceptionists() {
+        return receptionists;
+    }
     public static ArrayList<Guest> getGuests() {
         return guests;
     }

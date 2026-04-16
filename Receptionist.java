@@ -73,4 +73,10 @@ public class Receptionist extends Staff {
 
         System.out.println("No active reservation found.");
     }
+    public static boolean login(String name ,String password){
+        HotelDatabase.setCurrentReceptionist(HotelDatabase.findReceptionist(name,password));
+        if (HotelDatabase.getReceptionists() == null)
+            return false ;
+        return true ;
+    }
 }

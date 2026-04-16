@@ -9,7 +9,11 @@ public class Reservation {
     private LocalDate checkInDate ;
     private LocalDate checkOutDate ;
     private ReservationStatus status;
-
+public boolean equals(Object o){
+    if(o==null || !(o instanceof Reservation)) return false;
+    Reservation reservation = (Reservation) o;
+    return (this.id == reservation.getId());
+}
 
 public Reservation(Guest guest, Room room, LocalDate checkInDate, LocalDate checkOutDate) {
     this.id = nextId++;

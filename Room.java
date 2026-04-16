@@ -8,6 +8,16 @@ public class Room {
     private boolean isAvailable ;
     private RoomType roomType;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (o==null || !(o instanceof Room))return false;
+        Room room = (Room)o ;
+        return (room.getRoomNumber()==roomNumber);
+
+
+    }
+
     public Room(){}
 
     public Room(int roomNumber, List<Amenity> amenities, boolean isAvailable, RoomType roomType) {
