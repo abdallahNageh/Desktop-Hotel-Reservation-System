@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Invoice {
     private static int idCounter = 0;
@@ -70,7 +69,11 @@ public class Invoice {
         return totalAmount;
     }
 
-    public void pay(){
+    public void pay(Guest guest) throws InvalidPaymentException{
+        if (guest.getBalance() < this.totalAmount){
+            throw new InvalidPaymentException("Payment failed! Insufficient balance for Guest " + guest.getUsername());
+        }
+        guest.setBalance(guest.getBalance() - this.totalAmount);
         System.out.println("Payment Receipt");
         System.out.println("Invoice ID: " + id);
         System.out.println("Total Amount: " + totalAmount);

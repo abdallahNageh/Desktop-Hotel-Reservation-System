@@ -115,7 +115,10 @@ public class Guest {
     }
 
 
-    public Reservation makeReservation(Room room,LocalDate checkin,  LocalDate checkout){
+    public Reservation makeReservation(Room room,LocalDate checkin,  LocalDate checkout) throws RoomNotAvailableException{
+        if (!room.isAvailable()){
+            throw new RoomNotAvailableException("Booking failed: Room " + room.getRoomNumber() + " is currently unavailable.");
+        }
         Reservation newRev = new Reservation( this, room ,  checkin,  checkout);
         HotelDatabase.addReservation(newRev);
         return newRev ;
@@ -137,7 +140,7 @@ public class Guest {
     }
 
 
-    public Invoice checkout(Reservation reservation) {
+    public Invoice checkout(Reservation reservation) throws InvalidPaymentException {
 
         long days = java.time.temporal.ChronoUnit.DAYS.between(reservation.getCheckInDate(), reservation.getCheckOutDate());
 
@@ -148,8 +151,12 @@ public class Guest {
         Invoice invoice = new Invoice(total, PaymentMethod.CASH , LocalDate.now());
 
 
+        invoice.pay(this);
+
         HotelDatabase.addInvoice(invoice);
 
+
+        reservation.getRoom().setAvailable(true);
 
         reservation.setStatus(ReservationStatus.COMPLETED);
 
