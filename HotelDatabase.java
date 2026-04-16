@@ -111,8 +111,8 @@ public class HotelDatabase {
         amenities.add(wifi);
         amenities.add(tv);
 
-        RoomType single = new RoomType(1, "Single", "Single room", 500);
-        RoomType doubleRoom = new RoomType(2, "Double", "Double room", 800);
+        RoomType single = new RoomType(1, RoomTypeName.SINGLE, "Single room", 500);
+        RoomType doubleRoom = new RoomType(2, RoomTypeName.DOUBLE, "Double room", 800);
 
         roomTypes.add(single);
         roomTypes.add(doubleRoom);
