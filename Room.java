@@ -14,8 +14,6 @@ public class Room {
         if (o==null || !(o instanceof Room))return false;
         Room room = (Room)o ;
         return (room.getRoomNumber()==roomNumber);
-
-
     }
 
     public Room(){}

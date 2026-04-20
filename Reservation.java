@@ -1,7 +1,8 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class Reservation {
+public class
+Reservation {
     private static int nextId = 1;
     private int id;
     private Guest guest;

@@ -13,12 +13,11 @@ public class Guest {
     private String roomPreferences;
     public static int noOfguest = 0;
 
-    public boolean equals(Object o){
-        if(o==null || !(o instanceof Guest)) return false;
-        Guest guest = (Guest)o;
-        return (this.username.equals(guest.getUsername())&& this.password.equals(guest.password));
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Guest)) return false;
+        Guest guest = (Guest) o;
+        return (this.username.equals(guest.getUsername()) && this.password.equals(guest.password));
     }
-
 
 
     public Guest(String username, String password) {
@@ -95,7 +94,16 @@ public class Guest {
     }
 
     public boolean login(String username, String password) {
-        return this.username.equals(username) && this.password.equals(password);
+        for(Guest o : HotelDatabase.getGuests()){
+            if(o.getPassword().equals(password) && o.getUsername().equals(username) ){
+                HotelDatabase.setCurrentGuest(o);
+                break;
+            }
+        }
+
+        if (HotelDatabase.getCurrentAmdin() == null)
+            return false;
+        return true;
     }
 
     public ArrayList<Room> viewAvailableRooms() {
@@ -104,9 +112,9 @@ public class Guest {
         for (Room r : rooms) {
             if (r.isAvailable() == true) {
                 Available.add(r);
-                System.out.println("room number : "+ r.getRoomNumber() +"\n" +  " room type : " +r.getRoomType()+"\n" +"Price / Night "+ r.getPricePerNight());
+                System.out.println("room number : " + r.getRoomNumber() + "\n" + " room type : " + r.getRoomType() + "\n" + "Price / Night " + r.getPricePerNight());
 
-                for(int i = 0 ;i < r.getAmenities().size()  ; i++){
+                for (int i = 0; i < r.getAmenities().size(); i++) {
                     System.out.println(r.getAmenities().get(i).getName());
                 }
             }
@@ -115,27 +123,27 @@ public class Guest {
     }
 
 
-    public Reservation makeReservation(Room room,LocalDate checkin,  LocalDate checkout) throws RoomNotAvailableException{
-        if (!room.isAvailable()){
+    public Reservation makeReservation(Room room, LocalDate checkin, LocalDate checkout) throws RoomNotAvailableException {
+        if (!room.isAvailable()) {
             throw new RoomNotAvailableException("Booking failed: Room " + room.getRoomNumber() + " is currently unavailable.");
         }
-        Reservation newRev = new Reservation( this, room ,  checkin,  checkout);
+        Reservation newRev = new Reservation(this, room, checkin, checkout);
         HotelDatabase.addReservation(newRev);
-        return newRev ;
+        return newRev;
     }
 
-    public ArrayList<Reservation> viewmyReservation(){
+    public ArrayList<Reservation> viewmyReservation() {
         ArrayList<Reservation> myReservation = new ArrayList<Reservation>();
         for (Reservation R : HotelDatabase.getReservations()) {
             if (R.getGuest().equals(this)) {
-                 myReservation.add(R) ;
+                myReservation.add(R);
             }
 
         }
-        return myReservation ;
+        return myReservation;
     }
 
-    public void  cancelReservation (Reservation reservation){
+    public void cancelReservation(Reservation reservation) {
         reservation.setStatus(ReservationStatus.CANCELLED);
     }
 
@@ -148,7 +156,7 @@ public class Guest {
         double total = days * reservation.getRoom().getPricePerNight();
 
 
-        Invoice invoice = new Invoice(total, PaymentMethod.CASH , LocalDate.now());
+        Invoice invoice = new Invoice(total, PaymentMethod.CASH, LocalDate.now());
 
 
         invoice.pay(this);

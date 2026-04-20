@@ -75,7 +75,7 @@ public class Receptionist extends Staff {
     }
     public static boolean login(String name ,String password){
         HotelDatabase.setCurrentReceptionist(HotelDatabase.findReceptionist(name,password));
-        if (HotelDatabase.getReceptionists() == null)
+        if (HotelDatabase.getCurrentReceptionist() == null)
             return false ;
         return true ;
     }
