@@ -22,56 +22,60 @@ public class Receptionist extends Staff {
     public void manageCheckIn(Guest guest) {
 
         for (Reservation r : HotelDatabase.getReservations()) {
+        if (r.getGuest().equals(guest)) {
+            // Check if they are already checked in
+            if (r.getStatus() == ReservationStatus.CHECKED_IN) {
+                System.out.println("Guest is already checked in to room " + r.getRoom().getRoomNumber());
+                return;
+            }
 
-            if (r.getGuest().equals(guest)) {
-
-                if (r.getStatus() == ReservationStatus.CONFIRMED) {
-
-                    if (LocalDate.now().isBefore(r.getCheckInDate())) {
-                        System.out.println("Too early for check-in.");
-                        return;
-                    }
-
-                    r.getRoom().setAvailable(false);
-
-                    System.out.println("Guest checked in successfully.");
+            if (r.getStatus() == ReservationStatus.CONFIRMED) {
+                if (LocalDate.now().isBefore(r.getCheckInDate())) {
+                    System.out.println("Too early for check-in.");
                     return;
                 }
+
+                // Update both the room and the reservation status
+                r.getRoom().setAvailable(false);
+                r.setStatus(ReservationStatus.CHECKED_IN); // Key fix here
+
+                System.out.println("Guest checked in successfully.");
+                return;
             }
         }
-
-        System.out.println("No valid reservation found for check-in.");
+    }
+    System.out.println("No valid reservation found for check-in.");
     }
 
     // Check-Out
     public void manageCheckOut(Guest guest) {
+    for (Reservation r : HotelDatabase.getReservations()) {
+        if (r.getGuest().equals(guest) && r.getStatus() == ReservationStatus.CHECKED_IN) {
 
-        for (Reservation r : HotelDatabase.getReservations()) {
+            long days = java.time.temporal.ChronoUnit.DAYS.between(
+                    r.getCheckInDate(),
+                    r.getCheckOutDate()
+            );
 
-            if (r.getGuest().equals(guest) &&
-                r.getStatus() == ReservationStatus.CONFIRMED) {
+            // FIX: If check-in and check-out are the same day, charge for 1 night
+            if (days <= 0) {
+                days = 1;
+            }
 
-                long days = java.time.temporal.ChronoUnit.DAYS.between(
-                        r.getCheckInDate(),
-                        r.getCheckOutDate()
-                );
+            double total = days * r.getRoom().getPricePerNight();
 
-                double total = days * r.getRoom().getPricePerNight();
+            Invoice invoice = new Invoice(total, PaymentMethod.CASH, LocalDate.now());
+            HotelDatabase.addInvoice(invoice);
 
-                Invoice invoice = new Invoice(total, PaymentMethod.CASH, LocalDate.now());
+            r.setStatus(ReservationStatus.COMPLETED);
+            r.getRoom().setAvailable(true);
 
-                HotelDatabase.addInvoice(invoice);
-
-                r.setStatus(ReservationStatus.COMPLETED);
-
-                r.getRoom().setAvailable(true);
-
-                System.out.println("Check-out successful. Invoice generated.");
-                return;
+            System.out.println("Check-out successful. Total Charge: " + total);
+            System.out.println("Invoice generated for " + days + " night(s).");
+            return;
             }
         }
-
-        System.out.println("No active reservation found.");
+        System.out.println("No active stay found for this guest.");
     }
     public static boolean login(String name ,String password){
         HotelDatabase.setCurrentReceptionist(HotelDatabase.findReceptionist(name,password));
