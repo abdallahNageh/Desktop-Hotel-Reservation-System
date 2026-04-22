@@ -131,18 +131,20 @@ public class HotelDatabase {
         }
         return null;
     }
-    public static Admin findAdmin(String name,String password){
-        for (Admin a:admins){
-            if(a.getUsername()== name && a.getPassword() == password)
-                return a ;
-        }
-        return null ;
-    }
-    public static Receptionist findReceptionist(String name,String password){
-        for (Receptionist a:receptionists){
-            if(a.getUsername() == name && a.getPassword()==password)
+    public static Admin findAdmin(String name, String password){
+        for (Admin a : admins){
+            if(a.getUsername().equals(name) && a.getPassword().equals(password)) {
                 return a;
-                    }
+            }
+        }
+        return null;
+    }
+    public static Receptionist findReceptionist(String name, String password){
+        for (Receptionist a : receptionists){
+            if(a.getUsername().equals(name) && a.getPassword().equals(password)) {
+                return a;
+            }
+        }
         return null;
     }
 
