@@ -1,20 +1,8 @@
 public class RoomType {
     private int id;
-    private  RoomTypeName name ;   //i will use Enum
-    private String description ;
-    private double basePrice ;
-
-
-    @Override
-
-    public boolean equals(Object o) {
-
-        if(o==null || !(o instanceof RoomType)) return false;
-
-        RoomType roomType = (RoomType)o ;
-
-        return (id == roomType.getId());
-    }
+    private RoomTypeName name; // Using Enum
+    private String description;
+    private double basePrice;
 
     public RoomType(int id, RoomTypeName name, String description, double basePrice) {
         this.id = id;
@@ -23,7 +11,22 @@ public class RoomType {
         this.basePrice = basePrice;
     }
 
+    // --- Overridden Methods ---
 
+    @Override
+    public String toString() {
+        // Fixes the RoomType@... display issue
+        return this.name != null ? this.name.toString() : "No Name";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof RoomType)) return false;
+        RoomType roomType = (RoomType) o;
+        return (id == roomType.getId());
+    }
+
+    // --- Getters and Setters ---
 
     public int getId() {
         return id;
