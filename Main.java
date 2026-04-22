@@ -71,11 +71,23 @@ public class Main {
         String pass = scanner.next();
 
         Receptionist recep = HotelDatabase.findReceptionist(user, pass);
-        if (recep != null) {
-            System.out.println("\nWelcome Receptionist, " + user);
-            System.out.println("1. Manage Check-In");
+
+        // ❌ Login failed case
+        if (recep == null) {
+            System.out.println("Login Failed! Incorrect username or password.");
+            return;
+        }
+
+        // ✅ Login success
+        System.out.println("\nWelcome Receptionist, " + user);
+
+        while (true) {
+            System.out.println("\n1. Manage Check-In");
             System.out.println("2. Manage Check-Out");
             System.out.println("3. View Reservations");
+            System.out.println("4. Logout");
+            System.out.print("Choose an option: ");
+
             int choice = getIntInput();
 
             if (choice == 1) {
@@ -84,12 +96,33 @@ public class Main {
                 if (g != null) recep.manageCheckIn(g);
                 else System.out.println("Guest not found.");
             }
-        } else {
-            System.out.println("Login Failed!");
+
+            else if (choice == 2) {
+                System.out.print("Enter Guest Username for Check-Out: ");
+                Guest g = HotelDatabase.findGuest(scanner.next());
+                if (g != null) recep.manageCheckOut(g);
+                else System.out.println("Guest not found.");
+            }
+
+            else if (choice == 3) {
+                for (Reservation r : HotelDatabase.getReservations()) {
+                    System.out.println("Guest: " + r.getGuest().getUsername() +
+                            " | Room: " + r.getRoom().getRoomNumber() +
+                            " | Status: " + r.getStatus());
+                }
+            }
+
+            else if (choice == 4) {
+                System.out.println("Logging out...");
+                break; // go back to main menu
+            }
+
+            else {
+                System.out.println("Invalid choice!");
+            }
         }
     }
-
-    // --- Guest Menu ---
+     //--- Guest Menu ---
     private static void guestMenu() {
         System.out.print("Enter Username: ");
         String user = scanner.next();
@@ -97,11 +130,13 @@ public class Main {
         String pass = scanner.next();
 
         Guest guest = HotelDatabase.findGuest(user);
-        if (guest != null && guest.login(user, pass)) {
+
+        if (guest != null && guest.getPassword().equals(pass) /*guest.login(user, pass)*/) {
             System.out.println("\nWelcome, " + user + " | Balance: " + guest.getBalance());
             System.out.println("1. View Available Rooms");
             System.out.println("2. Make a Reservation");
             System.out.println("3. Checkout & Pay");
+
             int choice = getIntInput();
 
             if (choice == 1) {
@@ -113,19 +148,24 @@ public class Main {
                     try {
                         guest.makeReservation(r, LocalDate.now(), LocalDate.now().plusDays(2));
                         System.out.println("Room booked successfully!");
-                    } catch (Exception e) { System.out.println(e.getMessage()); }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
             } else if (choice == 3) {
-                var resList = guest.viewmyReservation();
+                ArrayList<Reservation> resList = guest.viewmyReservation();
                 if (!resList.isEmpty()) {
                     try {
                         guest.checkout(resList.get(0));
                         System.out.println("Checked out successfully!");
-                    } catch (Exception e) { System.out.println(e.getMessage()); }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                 } else {
                     System.out.println("No active reservations found.");
                 }
             }
+
         } else {
             System.out.println("Login Failed!");
         }
@@ -144,14 +184,66 @@ public class Main {
     }
 
     private static void setupInitialUsers() {
-        HotelDatabase.getAdmins().add(new Admin("admin", "admin", LocalDate.now(), 8));
-        HotelDatabase.getReceptionists().add(new Receptionist("recep", "recep", LocalDate.now(), 8, "Front"));
+//        HotelDatabase.getAdmins().add(new Admin("admin", "admin", LocalDate.now(), 8));
+//        HotelDatabase.getReceptionists().add(new Receptionist("recep", "recep", LocalDate.now(), 8, "Front"));
+//
+//        RoomType type = new RoomType(1, RoomTypeName.SINGLE, "Single Room", 500);
+//        HotelDatabase.addRoom(new Room(101, new ArrayList<>(), true, type));
+//        HotelDatabase.addRoom(new Room(102, new ArrayList<>(), true, type));
+//        HotelDatabase.findRoom(101).setPricePerNight(500);
+//        HotelDatabase.findRoom(102).setPricePerNight(500);
+//        
+//        Guest testGuest = new Guest("g1", "123");
+//        HotelDatabase.addGuest(testGuest);
+//
+//        Room room = HotelDatabase.findRoom(101);
+//
+//        // Create reservation for today
+//        Reservation res = new Reservation(
+//        testGuest,
+//        room,
+//        LocalDate.now(),
+//        //LocalDate.now().minusDays(0)
+//        LocalDate.now().plusDays(1)
+//        );
+//
+//        res.setStatus(ReservationStatus.CONFIRMED);
+//        HotelDatabase.addReservation(res);
 
-        RoomType type = new RoomType(1, RoomTypeName.SINGLE, "Single Room", 500);
-        HotelDatabase.addRoom(new Room(101, new ArrayList<>(), true, type));
-        HotelDatabase.addRoom(new Room(102, new ArrayList<>(), true, type));
-        HotelDatabase.findRoom(101).setPricePerNight(500);
-        HotelDatabase.findRoom(102).setPricePerNight(500);
+    // 1. Setup Staff
+    HotelDatabase.getAdmins().add(new Admin("admin", "admin", LocalDate.now(), 8));
+    HotelDatabase.getReceptionists().add(new Receptionist("recep", "recep", LocalDate.now(), 8, "Front"));
+
+    // 2. Setup Rooms
+    RoomType single = new RoomType(1, RoomTypeName.SINGLE, "Single Room", 500);
+    HotelDatabase.addRoom(new Room(101, new ArrayList<>(), true, single));
+    HotelDatabase.addRoom(new Room(102, new ArrayList<>(), true, single));
+    HotelDatabase.addRoom(new Room(103, new ArrayList<>(), true, single));
+    
+    // Set prices (since your Room constructor might not take price directly)
+    HotelDatabase.findRoom(101).setPricePerNight(500);
+    HotelDatabase.findRoom(102).setPricePerNight(500);
+    HotelDatabase.findRoom(103).setPricePerNight(500);
+
+    // --- TEST DATA FOR RECEPTIONIST ---
+
+    // Scenario A: The Valid Guest (Ready for Check-In Today)
+    Guest g1 = new Guest("valid_guest", "123");
+    HotelDatabase.addGuest(g1);
+    Reservation res1 = new Reservation(g1, HotelDatabase.findRoom(101), LocalDate.now(), LocalDate.now().plusDays(2));
+    res1.setStatus(ReservationStatus.CONFIRMED);
+    HotelDatabase.addReservation(res1);
+
+    // Scenario B: The Early Guest (Reservation is for next week)
+    Guest g2 = new Guest("early_guest", "123");
+    HotelDatabase.addGuest(g2);
+    Reservation res2 = new Reservation(g2, HotelDatabase.findRoom(102), LocalDate.now().plusDays(7), LocalDate.now().plusDays(9));
+    res2.setStatus(ReservationStatus.CONFIRMED);
+    HotelDatabase.addReservation(res2);
+
+    // Scenario C: The Guest with No Reservation
+    Guest g3 = new Guest("no_res_guest", "123");
+    HotelDatabase.addGuest(g3);
     }
 
     private static int getIntInput() {
@@ -159,6 +251,8 @@ public class Main {
             System.out.print("Please enter a valid number: ");
             scanner.next();
         }
-        return scanner.nextInt();
+        int input = scanner.nextInt();
+        scanner.nextLine();
+        return input;
     }
 }
