@@ -1,11 +1,12 @@
 public class RoomType {
+    private static int nextId =1;
     private int id;
     private RoomTypeName name; // Using Enum
     private String description;
     private double basePrice;
 
-    public RoomType(int id, RoomTypeName name, String description, double basePrice) {
-        this.id = id;
+    public RoomType( RoomTypeName name, String description, double basePrice) {
+        this.id = nextId++;
         this.name = name;
         this.description = description;
         this.basePrice = basePrice;

@@ -1,5 +1,6 @@
 public class Amenity {
 
+    private static int nextId = 1;
     private int id;
     private String name;
     private String description;
@@ -10,8 +11,8 @@ public class Amenity {
     }
 
 
-     public Amenity(int id, String name, String description) {
-        this.id = id;
+     public Amenity( String name, String description) {
+        this.id = nextId++;
         this.name = name;
         this.description = description;
     }

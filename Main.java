@@ -39,30 +39,79 @@ public class Main {
 
     // --- Admin Menu ---
     private static void adminMenu() {
-        System.out.print("Enter Admin Username: ");
-        String user = scanner.next();
-        System.out.print("Enter Admin Password: ");
-        String pass = scanner.next();
 
-        Admin admin = HotelDatabase.findAdmin(user, pass);
-        if (admin != null) {
-            System.out.println("\nWelcome Admin, " + user);
+        System.out.print("Enter Admin Username: ");
+        String user = scanner.nextLine();
+
+        System.out.print("Enter Admin Password: ");
+        String pass = scanner.nextLine();
+
+        // ❌ لو فشل
+        if (!Admin.login(user, pass)) {
+            System.out.println("Login Failed! Invalid username or password.");
+            return;
+        }
+
+        // ✅ لو نجح
+        System.out.println("\nWelcome Admin, " + user);
+
+        // 🔁 Loop يبدأ بس بعد login ناجح
+        while (true) {
+
+            System.out.println("\n========== ADMIN MENU ==========");
             System.out.println("1. View All Rooms");
             System.out.println("2. View All Guests");
             System.out.println("3. Add New Room");
-            System.out.println("4. Back to Main Menu");
+            System.out.println("4. Delete Room");
+            System.out.println("5. Logout");
+            System.out.print("Choose: ");
+
             int choice = getIntInput();
 
-            if (choice == 1) {
-                for (Room r : admin.viewRooms()) System.out.println("Room " + r.getRoomNumber() + " | Type: " + r.getRoomType().getName());
-            } else if (choice == 2) {
-                for (Guest g : admin.viewGuests()) System.out.println("Guest: " + g.getUsername());
+            switch (choice) {
+
+                case 1 -> {
+                    for (Room r : HotelDatabase.getCurrentAmdin().viewRooms()) {
+                        System.out.println("Room " + r.getRoomNumber()
+                                + " | Type: " + r.getRoomType().getName()
+                                + " | Price: " + r.getPricePerNight());
+                    }
+                }
+
+                case 2 -> {
+                    for (Guest g : HotelDatabase.getCurrentAmdin().viewGuests()) {
+                        System.out.println("Guest: " + g.getUsername()
+                                + " | Balance: " + g.getBalance());
+                    }
+                }
+
+                case 3 -> {
+                    addRoomFlow(); // ✨ فصلناها عشان الكود يبقى نضيف
+                }
+
+                case 4 -> {
+                    System.out.print("Enter Room Number to delete: ");
+                    int num = getIntInput();
+
+                    Room r = HotelDatabase.findRoom(num);
+
+                    if (r != null) {
+                        HotelDatabase.getRooms().remove(r);
+                        System.out.println("Room Deleted!");
+                    } else {
+                        System.out.println("Room not found!");
+                    }
+                }
+
+                case 5 -> {
+                    System.out.println("Logging out...");
+                    return;
+                }
+
+                default -> System.out.println("Invalid choice!");
             }
-        } else {
-            System.out.println("Login Failed! Admin not found.");
         }
     }
-
     // --- Receptionist Menu ---
     private static void receptionistMenu() {
         System.out.print("Enter Username: ");
@@ -215,7 +264,7 @@ public class Main {
     HotelDatabase.getReceptionists().add(new Receptionist("recep", "recep", LocalDate.now(), 8, "Front"));
 
     // 2. Setup Rooms
-    RoomType single = new RoomType(1, RoomTypeName.SINGLE, "Single Room", 500);
+    RoomType single = new RoomType(RoomTypeName.SINGLE, "Single Room", 500);
     HotelDatabase.addRoom(new Room(101, new ArrayList<>(), true, single));
     HotelDatabase.addRoom(new Room(102, new ArrayList<>(), true, single));
     HotelDatabase.addRoom(new Room(103, new ArrayList<>(), true, single));
@@ -254,5 +303,83 @@ public class Main {
         int input = scanner.nextInt();
         scanner.nextLine();
         return input;
+    }
+
+    private static void addRoomFlow() {
+
+        System.out.print("Enter Room Number: ");
+        int roomNumber = getIntInput();
+
+        if (HotelDatabase.findRoom(roomNumber) != null) {
+            System.out.println("Room already exists!");
+            return;
+        }
+
+        System.out.print("Enter Price: ");
+        double price = getDoubleInput();
+
+        System.out.println("Choose Room Type:");
+        System.out.println("1. SINGLE");
+        System.out.println("2. DOUBLE");
+        System.out.println("3. SUITE");
+
+        int typeChoice = getIntInput();
+
+        RoomTypeName typeName = switch (typeChoice) {
+            case 1 -> RoomTypeName.SINGLE;
+            case 2 -> RoomTypeName.DOUBLE;
+            case 3 -> RoomTypeName.SUITE;
+            default -> RoomTypeName.SINGLE;
+        };
+
+        RoomType type = new RoomType( typeName, typeName.name(), price);
+
+        ArrayList<Amenity> selectedAmenities = new ArrayList<>();
+
+        System.out.println("\nAvailable Amenities:");
+        for (int i = 0; i < HotelDatabase.getAmenities().size(); i++) {
+            System.out.println((i + 1) + ". " +
+                    HotelDatabase.getAmenities().get(i).getName());
+        }
+
+        System.out.println("Enter numbers (0 to finish):");
+
+        while (true) {
+            int a = getIntInput();
+
+            if (a == 0) break;
+
+            if (a >= 1 && a <= HotelDatabase.getAmenities().size()) {
+
+                Amenity selected = HotelDatabase.getAmenities().get(a - 1);
+
+                if (selectedAmenities.contains(selected)) {
+                    System.out.println("Already selected!");
+                } else {
+                    selectedAmenities.add(selected);
+                    System.out.println(selected.getName() + " added.");
+                }
+
+            } else {
+                System.out.println("Invalid choice!");
+            }
+        }
+
+        Room newRoom = new Room(roomNumber, selectedAmenities, true, type);
+        newRoom.setPricePerNight(price);
+
+        HotelDatabase.addRoom(newRoom);
+
+        System.out.println("Room Added Successfully!");
+    }
+    private static double getDoubleInput() {
+        while (true) {
+            try {
+                double input = Double.parseDouble(scanner.nextLine());
+                return input;
+            } catch (Exception e) {
+                System.out.print("Please enter a valid number: ");
+            }
+        }
     }
 }

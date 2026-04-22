@@ -197,14 +197,14 @@ public class HotelDatabase {
     // 🔹 Dummy Data
     public static void initializeData() {
 
-        Amenity wifi = new Amenity(1, "WiFi", "High speed internet");
-        Amenity tv = new Amenity(2, "TV", "Smart TV");
+        Amenity wifi = new Amenity( "WiFi", "High speed internet");
+        Amenity tv = new Amenity( "TV", "Smart TV");
 
         amenities.add(wifi);
         amenities.add(tv);
 
-        RoomType single = new RoomType(1, RoomTypeName.SINGLE, "Single room", 500);
-        RoomType doubleRoom = new RoomType(2, RoomTypeName.DOUBLE, "Double room", 800);
+        RoomType single = new RoomType( RoomTypeName.SINGLE, "Single room", 500);
+        RoomType doubleRoom = new RoomType( RoomTypeName.DOUBLE, "Double room", 800);
 
         roomTypes.add(single);
         roomTypes.add(doubleRoom);
