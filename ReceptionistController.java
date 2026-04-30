@@ -19,27 +19,27 @@ public class ReceptionistController {
 
     @FXML
     private void showDashboard() {
-        loadScreen("dashboard.fxml");
+        loadScreen("ManageReceptionistDashboard.fxml");
     }
 
     @FXML
     private void showGuests() {
-        loadScreen("guests.fxml");
+        loadScreen("ManageReceptionistGuests.fxml");
     }
 
     @FXML
     private void showRooms() {
-        loadScreen("rooms.fxml");
+        loadScreen("ManageReceptionistRooms.fxml");
     }
 
     @FXML
     private void showReservations() {
-        loadScreen("reservations.fxml");
+        loadScreen("ManageReceptionistReservations.fxml");
     }
 
     @FXML
     private void showCheckIn() {
-        loadScreen("checkin.fxml");
+        loadScreen("ManageReceptionistCheckIn.fxml");
     }
 
     @FXML
