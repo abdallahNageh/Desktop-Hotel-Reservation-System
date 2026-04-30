@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="10" style="-fx-padding: 20;"
+      fx:controller="ReceptionistReservationsController">
+    <Label text="View Reservations" style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+    <TableView fx:id="reservationsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="guestCol" text="Guest" prefWidth="150"/>
+            <TableColumn fx:id="roomCol" text="Room" prefWidth="120"/>
+            <TableColumn fx:id="checkInCol" text="Check-in" prefWidth="130"/>
+            <TableColumn fx:id="checkOutCol" text="Check-out" prefWidth="130"/>
+            <TableColumn fx:id="statusCol" text="Status" prefWidth="130"/>
+        </columns>
+    </TableView>
+</VBox>

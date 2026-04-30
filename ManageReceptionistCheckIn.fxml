@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="15" style="-fx-padding: 30;"
+      fx:controller="ReceptionistCheckInController">
+    <Label text="Check-in / Check-out" style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+
+    <Label text="Guest Username:"/>
+    <TextField fx:id="usernameField" promptText="Enter guest username"/>
+
+    <HBox spacing="10">
+        <Button text="Check In" onAction="#handleCheckIn"
+                style="-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 8 20;"/>
+        <Button text="Check Out" onAction="#handleCheckOut"
+                style="-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 8 20;"/>
+    </HBox>
+
+    <Label fx:id="messageLabel" style="-fx-font-size: 14;"/>
+</VBox>
